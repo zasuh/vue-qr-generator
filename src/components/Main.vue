@@ -3,7 +3,10 @@
     <h1>{{ msg }}</h1>
     <input type="text" v-model="url">
     <input type="button" value="Convert" v-on:click="convert(url)">
-    <img :src="url" alt="The QR code">
+    <div class="qr-image">
+      <img :src="imgSrc" v-if="url !== ''">
+      <h3 v-else>This is where your image will load.</h3>
+    </div>
   </div>
 </template>
 
@@ -15,13 +18,14 @@
     },
     data () {
       return {
-        url: ''
+        url: '',
+        imgSrc: ''
       }
     },
     methods: {
       convert: function(url) {
-        const QR_URL = `https://qrtag.net/api/qr(_transparent)(_100x100).png(?url=${url})`;
-        this.url = QR_URL;
+        const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${url}`;
+        this.imgSrc = QR_URL;
       }
     }
   }
@@ -42,5 +46,8 @@
   }
   a {
     color: #42b983;
+  }
+  .qr-image {
+    margin: 20px 0 0 0;
   }
 </style>
